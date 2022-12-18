@@ -13,4 +13,10 @@ class OverviewController extends AbstractController
     {
         return new Response('<body>Hello World!</body>');
     }
+
+    #[Route('/sandbox/overview/hello2', name: 'sandbox_overview_hello2')]
+    public function hello2Action(): Response
+    {
+        return new Response('<body>Hello World number 2!</body>');
+    }
 }
