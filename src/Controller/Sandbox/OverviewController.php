@@ -29,4 +29,14 @@ class OverviewController extends AbstractController
         );
         return $this->render('Sandbox/Overview/hello3.html.twig', $args);
     }
+
+    #[Route('/sandbox/overview/hello4', name: 'sandbox_overview_hello4')]
+    public function hello4Action(): Response
+    {
+        $args = array(
+            'prenom' => 'Gilles',
+            'jeux' => ['A Plague Tale : Innocence', 'WoW', "Mass Effect", 'Life is Strange'],
+        );
+        return $this->render('Sandbox/Overview/hello4.html.twig', $args);
+    }
 }
