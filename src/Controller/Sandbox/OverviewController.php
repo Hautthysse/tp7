@@ -11,6 +11,6 @@ class OverviewController extends AbstractController
     #[Route('/sandbox/overview', name: 'sandbox_overview')]
     public function indexAction(): Response
     {
-        return new Response('Hello World!');
+        return new Response('<body>Hello World!</body>');
     }
 }
