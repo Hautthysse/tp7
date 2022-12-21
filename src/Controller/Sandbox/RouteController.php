@@ -32,10 +32,10 @@ class RouteController extends AbstractController
     #[Route(
         '/with-constraint/{age}',
         name: '_with_constraint',
-        requirements: ['age' => '[0-9]+'],
+        requirements: ['age' => '0|[1-9]\d*'],
         defaults: ['age' => 18],
     )]
-    public function withConstraintAction($age): Response
+    public function withConstraintAction(int $age): Response
     {
         dump($age);
         return new Response('<body>Route::withConstraint : age = ' . $age . ' (' . gettype($age) . ')</body>');
