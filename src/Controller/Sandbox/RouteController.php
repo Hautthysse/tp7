@@ -9,9 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sandbox/route', name: 'sandbox_route')]
 class RouteController extends AbstractController
 {
-    #[Route('', name: '')]
-    public function indexAction(): Response
+    #[Route(
+        '/with-variable/{age}',
+        name: '_with_variable'
+    )]
+    public function withVariableAction($age): Response
     {
-        return new Response('<body>RouteController</body>');
+        return new Response('<body>Route::withVariable : age = ' . $age . '</body>');
     }
 }
