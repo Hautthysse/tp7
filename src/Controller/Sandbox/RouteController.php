@@ -115,6 +115,7 @@ class RouteController extends AbstractController
         ],
         defaults: [
             'month' => 1,
+            'filename' => 'picture',
             'ext' => 'png',
         ],
     )]
