@@ -103,4 +103,30 @@ class RouteController extends AbstractController
         );
         return $this->render('Sandbox/Route/test1234.html.twig', $args);
     }
+
+    #[Route(
+        '/test4/{year}/{month}/{filename}.{ext}',
+        name: '_test4',
+        requirements: [
+            'year' => '[1-9]\d{0,3}',
+            'month' => '(0?[1-9])|(1[0-2])',
+            'filename' => '[-a-zA-Z]+',
+            'ext' => 'jpg|jpeg|png|ppm',
+        ],
+        defaults: [
+            'month' => 1,
+            'ext' => 'png',
+        ],
+    )]
+    public function test4Action(int $year, int $month, string $filename, string $ext): Response
+    {
+        $args = array(
+            'title' => 'test4',
+            'year' => $year,
+            'month' => $month,
+            'filename' => $filename,
+            'ext' => $ext,
+        );
+        return $this->render('Sandbox/Route/test1234.html.twig', $args);
+    }
 }
