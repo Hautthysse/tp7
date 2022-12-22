@@ -130,4 +130,20 @@ class RouteController extends AbstractController
         );
         return $this->render('Sandbox/Route/test1234.html.twig', $args);
     }
+
+    #[Route(
+        '/test4/{year}',
+        name: '_test4bis',
+        requirements: [
+            'year' => '[1-9]\d{0,3}',
+        ],
+    )]
+    public function test4bisAction(int $year): Response
+    {
+        $args = array(
+            'title' => 'test4bis',
+            'year' => $year,
+        );
+        return $this->render('Sandbox/Route/test4bis.html.twig', $args);
+    }
 }
