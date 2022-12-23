@@ -4,6 +4,7 @@ namespace App\Controller\Sandbox;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/sandbox/route', name: 'sandbox_route')]
@@ -145,5 +146,19 @@ class RouteController extends AbstractController
             'year' => $year,
         );
         return $this->render('Sandbox/Route/test4bis.html.twig', $args);
+    }
+
+    #[Route(
+        '/permis/{age}',
+        name: '_permis',
+        requirements: [
+            'age' => '\d+',
+        ],
+    )]
+    public function permisAction(int $age): Response
+    {
+        if ($age < 18)
+            throw new NotFoundHttpException('Vous n\'êtes pas assez âgé !');
+        return new Response('<body>Route::permis : age = ' . $age . ' (&ge; 18)</body>');
     }
 }
