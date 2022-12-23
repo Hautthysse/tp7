@@ -42,6 +42,8 @@ class InjectionController extends AbstractController
         // par exemple cette action supprime une entrée dans la base de données
         $session->getFlashBag()->add('info', 'L\'enregistrement a été supprimé');
         $this->addFlash('info', 'L\'enregistrement a été supprimé (bis repetita)');
+        $this->addFlash('error', 'Il pourrait y avoir une erreur');
+        $this->addFlash('error', 'Il pourrait y avoir une erreur (bis repetita)');
         return $this->redirectToRoute('sandbox_injection_display_flash');
     }
 

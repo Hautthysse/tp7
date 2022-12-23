@@ -11,5 +11,12 @@
                 <li>{{ msg }}</li>
             {% endfor %}
         </ul>
+
+        <h1>Messages flash de type "error"</h1>
+        <ul>
+            {% for msg in app.session.flashBag.get('error') %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
     </body>
 </html>
