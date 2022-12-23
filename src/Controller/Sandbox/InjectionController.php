@@ -13,7 +13,10 @@ class InjectionController extends AbstractController
     #[Route('/un', name: '_un')]
     public function unAction(Request $request): Response
     {
-        dump($request);
+        dump($request->getMethod());
+        dump($request->query->get('foo'));
+        dump($request->query->all());
+        dump($request->cookies->all());
         return new Response('<body>Injection::un</body>');
     }
 }
