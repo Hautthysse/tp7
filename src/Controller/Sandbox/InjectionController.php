@@ -35,4 +35,13 @@ class InjectionController extends AbstractController
         dump($_SESSION);
         return new Response('<body>Injection::un</body>');
     }
+
+    #[Route('/create-flash', name: '_create_flash')]
+    public function createFlashAction(Session $session): Response
+    {
+        // par exemple cette action supprime une entrée dans la base de données
+        $session->getFlashBag()->add('info', 'L\'enregistrement a été supprimé');
+        $this->addFlash('info', 'L\'enregistrement a été supprimé (bis repetita)');
+        return $this->redirectToRoute('sandbox_injection_display_flash');
+    }
 }
