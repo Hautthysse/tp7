@@ -161,4 +161,10 @@ class RouteController extends AbstractController
             throw new NotFoundHttpException('Vous n\'êtes pas assez âgé !');
         return new Response('<body>Route::permis : age = ' . $age . ' (&ge; 18)</body>');
     }
+
+    #[Route('/redirect1', name: '_redirect1')]
+    public function redirect1Action(): Response
+    {
+        return $this->redirectToRoute('sandbox_prefix_hello4');
+    }
 }
