@@ -167,4 +167,16 @@ class RouteController extends AbstractController
     {
         return $this->redirectToRoute('sandbox_prefix_hello4');
     }
+
+    #[Route('/redirect2', name: '_redirect2')]
+    public function redirect2Action(): Response
+    {
+        $params = array(
+            'year' => 1815,
+            'month' => 12,
+            'filename' => 'ada',
+            'ext' => 'ppm',                 // tester en commentant la ligne, puis en mettant une extension interdite
+        );
+        return $this->redirectToRoute('sandbox_route_test3', $params);
+    }
 }
