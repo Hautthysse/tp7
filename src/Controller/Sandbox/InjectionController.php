@@ -44,4 +44,10 @@ class InjectionController extends AbstractController
         $this->addFlash('info', 'L\'enregistrement a été supprimé (bis repetita)');
         return $this->redirectToRoute('sandbox_injection_display_flash');
     }
+
+    #[Route('/display-flash', name: '_display_flash')]
+    public function displayFlashAction(): Response
+    {
+        return $this->render('Sandbox/Injection/displayFlash.html.twig');
+    }
 }
