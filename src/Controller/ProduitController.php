@@ -89,4 +89,14 @@ class ProduitController extends AbstractController
         $this->addFlash('info', 'échec ajout relation produit/pays');
         return $this->redirectToRoute('produit_view', ['id' => 3]);
     }
+
+    #[Route(
+        '/magasin/add',
+        name: '_magasin_add',
+    )]
+    public function magasinAddAction(): Response
+    {
+        $this->addFlash('info', 'échec ajout relation produit/magasin');
+        return $this->redirectToRoute('produit_view', ['id' => 3]);
+    }
 }
