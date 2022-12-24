@@ -47,4 +47,14 @@ class ProduitController extends AbstractController
         );
         return $this->render('Produit/view.html.twig', $args);
     }
+
+    #[Route(
+        '/add',
+        name: '_add',
+    )]
+    public function addAction(): Response
+    {
+        $this->addFlash('info', 'échec ajout produit');
+        return $this->redirectToRoute('produit_view', ['id' => 3]);
+    }
 }
