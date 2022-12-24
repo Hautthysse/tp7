@@ -68,4 +68,15 @@ class ProduitController extends AbstractController
         $this->addFlash('info', 'échec modification produit ' . $id);
         return $this->redirectToRoute('produit_view', ['id' => $id]);
    }
+
+    #[Route(
+        '/delete/{id}',
+        name: '_delete',
+        requirements: ['id' => '[1-9]\d*'],
+    )]
+    public function deleteAction(int $id): Response
+    {
+        $this->addFlash('info', 'échec suppression produit ' . $id);
+        return $this->redirectToRoute('produit_list');
+    }
 }
