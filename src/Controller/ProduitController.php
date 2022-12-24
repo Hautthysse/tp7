@@ -57,4 +57,15 @@ class ProduitController extends AbstractController
         $this->addFlash('info', 'échec ajout produit');
         return $this->redirectToRoute('produit_view', ['id' => 3]);
     }
+
+    #[Route(
+        '/edit/{id}',
+        name: '_edit',
+        requirements: ['id' => '[1-9]\d*'],
+    )]
+    public function editAction(int $id): Response
+    {
+        $this->addFlash('info', 'échec modification produit ' . $id);
+        return $this->redirectToRoute('produit_view', ['id' => $id]);
+   }
 }
