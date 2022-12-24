@@ -79,4 +79,14 @@ class ProduitController extends AbstractController
         $this->addFlash('info', 'échec suppression produit ' . $id);
         return $this->redirectToRoute('produit_list');
     }
+
+    #[Route(
+        '/pays/add',
+        name: '_pays_add',
+    )]
+    public function paysAddAction(): Response
+    {
+        $this->addFlash('info', 'échec ajout relation produit/pays');
+        return $this->redirectToRoute('produit_view', ['id' => 3]);
+    }
 }
