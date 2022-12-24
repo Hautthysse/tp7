@@ -7,7 +7,7 @@
     <body>
         {# gestion dese messages flash #}
         {% set messages =  app.session.flashBag.get('info') %}
-        {%  if messages|length > 0 %}
+        {% if messages|length > 0 %}
             <ul>
                 {% for msg in messages %}
                     <li>{{ msg }}</li>

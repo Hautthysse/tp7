@@ -33,4 +33,18 @@ class ProduitController extends AbstractController
         );
         return $this->render('Produit/list.html.twig', $args);
     }
+
+    #[Route(
+        '/view/{id}',
+        name: '_view',
+        requirements: ['id' => '[1-9]\d*'],
+    )]
+    public function viewAction(int $id): Response
+    {
+        // simule l'interrogation de la base avec $id qui aurait la valeur 5
+        $args = array(
+            'produit' => ['id' => 5, 'denomination' => 'souris',  'code' => '35425785', "actif" => true],
+        );
+        return $this->render('Produit/view.html.twig', $args);
+    }
 }
