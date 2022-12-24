@@ -9,6 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/produit', name: 'produit')]
 class ProduitController extends AbstractController
 {
+    #[Route('', name: '')]
+    public function indexAction(): Response
+    {
+        return $this->redirectToRoute('produit_list', ['page' => 1]);
+    }
+
     #[Route(
         '/list/{page}',
         name: '_list',
