@@ -26,4 +26,13 @@ class TwigController extends AbstractController
     {
         return $this->render('Sandbox/Twig/vue2.html.twig');
     }
+
+    #[Route(
+        '/vue3',
+        name: '_vue3'
+    )]
+    public function vue3Action(): Response
+    {
+        return $this->render('Sandbox/Twig/vue3.html.twig');
+    }
 }
