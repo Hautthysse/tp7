@@ -3,12 +3,12 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{# ici le bloc title #}</title>
+        <title>{% block title %}Sandbox{% endblock %}</title>
     </head>
     <body>
         <div id="vue">
-            <h1>{# ici le bloc titre_principal #}</h1>
-            {# ici le bloc vue #}
+            <h1>{% block titre_principal %}{% endblock %}</h1>
+            {% block vue %}{% endblock %}
         </div>
     </body>
 </html>
