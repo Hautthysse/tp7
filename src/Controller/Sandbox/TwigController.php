@@ -9,4 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sandbox/twig', name: 'sandbox_twig')]
 class TwigController extends AbstractController
 {
+    #[Route(
+        '/vue1',
+        name: '_vue1'
+    )]
+    public function vue1Action(): Response
+    {
+        return $this->render('Sandbox/Twig/vue1.html.twig');
+    }
 }
