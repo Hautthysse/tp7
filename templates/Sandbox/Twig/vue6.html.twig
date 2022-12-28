@@ -78,6 +78,16 @@
     {% set ville = 'Poitiers' %}
     <p>{{ 'Il y a %d habitants à %s en 1990' | format(78894, ville) }}</p>
 
+    {# UEs sous condition #}
+    <h2>UEs dont le volume horaire est &ge; 30</h2>
+    <ul>
+        {% for ue in offre.ues %}
+            {% if ue.volume >= 30 %}
+                <li>{{ ue.nom }} ({{ ue.volume }} heure(s))</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
     <h2>Dump du tableau des formations</h2>
     <p>Tips : Ctrl-clic sur les petites flèches</p>
     {{ dump(offre) }}
