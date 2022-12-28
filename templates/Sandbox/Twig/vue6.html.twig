@@ -20,6 +20,15 @@
         {% endfor %}
     </ul>
 
+    {# noms et volumes horaires des UEs #}
+    <h2>Noms et volumes des UEs</h2>
+    <ul>
+        {% for ue in offre.ues %}
+            {# <li>{{ loop.index }}. {{ ue.nom }} : {{ ue.volume }}</li> #}          {# manière "normale" #}
+            <li>{{ loop.index }}. {{ ue.nom ~ ' : ' ~ ue.volume }}</li>              {# manière avec concaténation #}
+        {% endfor %}
+    </ul>
+
     <h2>Dump du tableau des formations</h2>
     <p>Tips : Ctrl-clic sur les petites flèches</p>
     {{ dump(offre) }}
