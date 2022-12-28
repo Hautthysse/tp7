@@ -73,6 +73,11 @@
     <h2>Nombre de mentions</h2>
     <p>Il y a {{ offre.mentions|length }} mention{{ offre.mentions|length > 1 ? 's' : '' }}</p>
 
+    {# filtre format #}
+    <h2>Filtre <code>format</code></h2>
+    {% set ville = 'Poitiers' %}
+    <p>{{ 'Il y a %d habitants à %s en 1990' | format(78894, ville) }}</p>
+
     <h2>Dump du tableau des formations</h2>
     <p>Tips : Ctrl-clic sur les petites flèches</p>
     {{ dump(offre) }}
