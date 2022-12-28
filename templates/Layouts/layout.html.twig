@@ -3,11 +3,11 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{# ici le bloc title #}</title>
-        {# ici le bloc css #}
-        {# ici le bloc javascript #}
+        <title>{% block title %}{% endblock %}</title>
+        {% block css %}{% endblock %}
+        {% block javascript %}{% endblock %}
     </head>
     <body>
-        {# ici le bloc body #}
+        {% block body %}{% endblock %}
     </body>
 </html>
