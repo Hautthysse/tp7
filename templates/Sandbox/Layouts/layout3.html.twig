@@ -7,7 +7,7 @@
     </head>
     <body>
         <div id="palmares">
-            {# inclure ici l'appel à TwigController::palmaresAction avec la paramètre 3 #}
+            {{ render(controller('App\\Controller\\Sandbox\\TwigController::palmaresAction', {n : 3})) }}
         </div>
 
         <div id="vue">

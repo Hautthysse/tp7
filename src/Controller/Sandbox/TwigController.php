@@ -44,4 +44,24 @@ class TwigController extends AbstractController
     {
         return $this->render('Sandbox/Twig/vue4.html.twig');
     }
+
+    // surtout pas d'attribut Route
+    // note : cette action devrait être dans un contrôleur dédié
+    public function palmaresAction(int $n): Response
+    {
+        // normalement devrait être extrait de la base de données
+        $produits = [];
+        for ($i = 1; $i <= $n; $i ++)
+            $produits[] = ['denomination' => 'produit'.$i, 'prix' => 1000-$i];
+        return $this->render('Sandbox/Layouts/palmares.html.twig', [ 'produits' => $produits ]);
+    }
+
+    #[Route(
+        '/vue5',
+        name: '_vue5'
+    )]
+    public function vue5Action(): Response
+    {
+        return $this->render('Sandbox/Twig/vue5.html.twig');
+    }
 }
