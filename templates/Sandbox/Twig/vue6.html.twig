@@ -88,6 +88,16 @@
         {% endfor %}
     </ul>
 
+    {# variable app #}
+    <h2>Variable globale <code>app</code></h2>
+    <p>
+        <code>app.session</code> : {{ dump(app.session) }}
+        <code>app.request</code> : {{ dump(app.request) }}
+        <code>app.environment</code> : {{ dump(app.environment) }}
+        <code>app.debug</code> : {{ dump(app.debug) }}
+        <code>app.user</code> : {{ dump(app.user) }}
+    </p>
+
     <h2>Dump du tableau des formations</h2>
     <p>Tips : Ctrl-clic sur les petites flèches</p>
     {{ dump(offre) }}
@@ -95,4 +105,7 @@
         Tips : lorsqu'on manipule des structures complexes, il peut être utile d'avoir
         un <code>dump</code> sous les yeux pour visualiser l'organisation des données.
     </p>
+
+    <h2>Dump dde la variable globale <code>app</code></h2>
+    {{ dump(app) }}
 {% endblock %}
