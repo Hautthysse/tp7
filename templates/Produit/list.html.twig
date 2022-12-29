@@ -1,40 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>Vente : produits</title>
-    </head>
-    <body>
-        {# gestion dese messages flash #}
-        {% set messages =  app.session.flashBag.get('info') %}
-        {% if messages|length > 0 %}
-            <ul>
-                {% for msg in messages %}
-                    <li>{{ msg }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+{% extends 'Layouts/layout_vente.html.twig' %}
 
-        <h1>Site de vente : liste des produits</h1>
+{% block title %}{{ parent() }} : produits{% endblock %}
 
-        <p>
-            {% if page == 0 %}
-                affichage de toutes les pages
-            {% else %}
-                affichage de la page {{ page }}
-            {% endif %}
-        </p>
+{% block titre_principal %}{{ parent() }} : liste des produits{% endblock %}
 
-        {% if produits|length == 0 %}
-            <p>Aucun produit dans la base de données</p>
+{% block vue %}
+    <p>
+        {% if page == 0 %}
+            affichage de toutes les pages
         {% else %}
-            <ul>
-                {% for produit in produits %}
-                    <li>{{ produit.denomination }} ({{ produit.code }})</li>
-                {% endfor %}
-            </ul>
+            affichage de la page {{ page }}
         {% endif %}
+    </p>
 
-        {{ dump(produits) }}
-    </body>
-</html>
+    {% if produits|length == 0 %}
+        <p>Aucun produit dans la base de données</p>
+    {% else %}
+        <ul>
+            {% for produit in produits %}
+                <li>{{ produit.denomination }} ({{ produit.code }})</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ dump(produits) }}
+{% endblock %}
