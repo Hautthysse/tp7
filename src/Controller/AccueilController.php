@@ -13,4 +13,12 @@ class AccueilController extends AbstractController
     {
         return $this->render('Accueil/index.html.twig');
     }
+
+    // pour inclusion de contrôleur dans le template secondaire : action non routable
+    public function menuAction(): Response
+    {
+        $args = array(
+        );
+        return $this->render('Layouts/menu.html.twig', $args);
+    }
 }
