@@ -5,6 +5,7 @@ namespace App\Entity\Sandbox;
 use App\Repository\Sandbox\FilmRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'sb_films')]
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
@@ -17,9 +18,13 @@ class Film
     private ?string $titre = null;
 
     #[ORM\Column]
+    // le paramètre "name" n'est pas précisé, le nom du champ sera celui du membre : "annee"
+    // le paramètre "type" n'est pas précisé, ce sera celui correspondant à 'int' : "integer"
     private ?int $annee = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'enstock', type: 'boolean')]
+    // paramètre "name" inutile ici car c'est déjà la valeur par défaut (c'est pour l'exemple)
+    // idem pour le paramètre "type"
     private ?bool $enstock = null;
 
     #[ORM\Column]
