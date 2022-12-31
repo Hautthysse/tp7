@@ -17,12 +17,12 @@ class Film
     #[ORM\Column(length: 200)]
     private ?string $titre = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['comment' => 'année de sortie'])]
     // le paramètre "name" n'est pas précisé, le nom du champ sera celui du membre : "annee"
     // le paramètre "type" n'est pas précisé, ce sera celui correspondant à 'int' : "integer"
     private ?int $annee = null;
 
-    #[ORM\Column(name: 'enstock', type: 'boolean')]
+    #[ORM\Column(name: 'enstock', type: 'boolean', options: ['default' => true])]
     // paramètre "name" inutile ici car c'est déjà la valeur par défaut (c'est pour l'exemple)
     // idem pour le paramètre "type"
     private ?bool $enstock = null;
