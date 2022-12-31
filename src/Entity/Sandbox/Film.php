@@ -28,6 +28,17 @@ class Film
     #[ORM\Column(nullable: true)]
     private ?int $quantite = null;
 
+
+    /**
+     * Film constructor
+     */
+    public function __construct()
+    {
+        $this->enstock = true;
+        $this->quantite = null;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
