@@ -77,4 +77,19 @@ class DoctrineController extends AbstractController
 
         return $this->redirectToRoute('sandbox_doctrine_view', ['id' => $film->getId()]);
     }
+
+    #[Route('/effacerendur', name: '_effacerendur')]
+    public function effacerendurAction(EntityManagerInterface $em): Response
+    {
+        $id = 3;
+        $filmRepository = $em->getRepository(Film::class);
+        $film = $filmRepository->find($id);
+        // normalement il faut tester si $film est null
+
+        //$em->persist($film);   // inutile, c'est automatiqe
+        $em->remove($film);      // le paramètre est l'objet et non pas l'id
+        $em->flush();            // ne pas oublier sinon rien ne se passe
+
+        return $this->redirectToRoute('sandbox_doctrine_list');
+    }
 }
