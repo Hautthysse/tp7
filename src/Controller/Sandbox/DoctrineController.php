@@ -12,9 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class DoctrineController extends AbstractController
 {
     #[Route('/list', name: '_list')]
-    public function listAction(): Response
+    public function listAction(EntityManagerInterface $em): Response
     {
+        $filmRepository = $em->getRepository(Film::class);
+        $films = $filmRepository->findAll();
         $args = array(
+            'films' => $films,
         );
         return $this->render('Sandbox/Doctrine/list.html.twig', $args);
     }
