@@ -2,6 +2,8 @@
 
 namespace App\Controller\Sandbox;
 
+use App\Entity\Sandbox\Film;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,5 +40,24 @@ class DoctrineController extends AbstractController
     {
         $this->addFlash('info', 'suppression film ' . $id . ' réussie');
         return $this->redirectToRoute('sandbox_doctrine_list');
+    }
+
+    #[Route('/ajouterendur', name: '_ajouterendur')]
+    public function ajouterendurAction(EntityManagerInterface $em): Response
+    {
+        $film = new Film();           // le film est encore indépendant de Doctrine
+        $film
+            ->setTitre('Le grand bleu')
+            ->setAnnee(1988)
+            ->setEnstock(true)        // inutile : valeur par défaut
+            ->setPrix(9.99)
+            ->setQuantite(88);
+        dump($film);
+
+        $em->persist($film);     // Doctrine devient responsable du film
+        $em->flush();            // injection physique dans la BD
+        dump($film);
+
+        return $this->redirectToRoute('sandbox_doctrine_view', ['id' => $film->getId()]);
     }
 }
