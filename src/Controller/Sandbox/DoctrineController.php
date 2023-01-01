@@ -6,6 +6,7 @@ use App\Entity\Sandbox\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/sandbox/doctrine', name: 'sandbox_doctrine')]
@@ -44,9 +45,21 @@ class DoctrineController extends AbstractController
         name: '_delete',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function deleteAction(int $id): Response
+    public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
+        $filmRepository = $em->getRepository(Film::class);
+        $film = $filmRepository->find($id);
+
+        if (is_null($film))
+        {
+            $this->addFlash('info', 'suppression film ' . $id . ' : échec');
+            throw new NotFoundHttpException('film ' . $id . ' inconnu');
+        }
+
+        $em->remove($film);      // le paramètre est l'objet et non pas l'id
+        $em->flush();
         $this->addFlash('info', 'suppression film ' . $id . ' réussie');
+
         return $this->redirectToRoute('sandbox_doctrine_list');
     }
 
