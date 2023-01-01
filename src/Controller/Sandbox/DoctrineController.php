@@ -27,9 +27,14 @@ class DoctrineController extends AbstractController
         name: '_view',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function viewAction(int $id): Response
+    public function viewAction(int $id, EntityManagerInterface $em): Response
     {
+        $filmRepository = $em->getRepository(Film::class);
+        $film = $filmRepository->find($id);
+        // normalement un $film à null devrait être traité ici (exception par exemple)
         $args = array(
+            'film' => $film,    // film peut être null, c'est la vue qui gérera
+            'id' => $id,        // utile uniquement si le film n'existe pas
         );
         return $this->render('Sandbox/Doctrine/view.html.twig', $args);
     }
