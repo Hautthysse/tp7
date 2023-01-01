@@ -60,4 +60,21 @@ class DoctrineController extends AbstractController
 
         return $this->redirectToRoute('sandbox_doctrine_view', ['id' => $film->getId()]);
     }
+
+    #[Route('/modifierendur', name: '_modifierendur')]
+    public function modifierendurAction(EntityManagerInterface $em): Response
+    {
+        $id = 2;
+        $filmRepository = $em->getRepository(Film::class);
+        $film = $filmRepository->find($id);
+        // normalement il faut tester si $film est null
+        $film
+            ->setPrix(15.98)
+            ->setQuantite($film->getQuantite() + 10);
+
+        //$em->persist($film);   // inutile, c'est automatiqe
+        $em->flush();            // ne pas oublier sinon rien ne se passe
+
+        return $this->redirectToRoute('sandbox_doctrine_view', ['id' => $film->getId()]);
+    }
 }
