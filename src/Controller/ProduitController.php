@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,15 +23,13 @@ class ProduitController extends AbstractController
         requirements: ['page' => '[1-9]\d*'],
         defaults: [ 'page' => 0],        // la valeur par défaut ne respecte pas les contraintes
     )]
-    public function listAction(int $page): Response
+    public function listAction(int $page, EntityManagerInterface $em): Response
     {
+        $produitRepository = $em->getRepository(Produit::class);
+        $produits = $produitRepository->findAll();
         $args = array(
             'page' => $page,
-            'produits' => array(
-                ['id' => 2, 'denomination' => 'RAM',     'code' => '97558143', "actif" => false],
-                ['id' => 5, 'denomination' => 'souris',  'code' => '35425785', "actif" => true],
-                ['id' => 6, 'denomination' => 'clavier', 'code' => '33278214', "actif" => true],
-            ),
+            'produits' => $produits,
         );
         return $this->render('Produit/list.html.twig', $args);
     }
