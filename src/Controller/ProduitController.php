@@ -39,11 +39,19 @@ class ProduitController extends AbstractController
         name: '_view',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function viewAction(int $id): Response
+    public function viewAction(int $id, EntityManagerInterface $em): Response
     {
-        // simule l'interrogation de la base avec $id qui aurait la valeur 5
+        $produitRepository = $em->getRepository(Produit::class);
+        $produit = $produitRepository->find($id);
+
+        if (is_null($produit))
+        {
+            $this->addFlash('info', 'view : produit ' . $id . ' inexistant');
+            return $this->redirectToRoute('produit_list');
+        }
+
         $args = array(
-            'produit' => ['id' => 5, 'denomination' => 'souris',  'code' => '35425785', "actif" => true],
+            'produit' => $produit,
         );
         return $this->render('Produit/view.html.twig', $args);
     }
