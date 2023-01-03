@@ -16,7 +16,12 @@ class Habitant
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Permis::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(
+        name: 'id_permis',
+        referencedColumnName: 'id',
+        nullable: true,
+    )]
     private ?Permis $permis = null;
 
     public function getId(): ?int
