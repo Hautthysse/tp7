@@ -16,7 +16,11 @@ class Habitant
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToOne(targetEntity: Permis::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(
+        targetEntity: Permis::class,
+        inversedBy: 'habitant',
+        cascade: ['persist', 'remove'],
+    )]
     #[ORM\JoinColumn(
         name: 'id_permis',
         referencedColumnName: 'id',

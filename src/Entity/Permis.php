@@ -16,6 +16,13 @@ class Permis
     #[ORM\Column(length: 255)]
     private ?string $prefecture = null;
 
+    #[ORM\OneToOne(
+        targetEntity: Habitant::class,
+        mappedBy: 'permis',
+        cascade: ['persist', 'remove'],
+    )]
+    private ?Habitant $habitant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +36,28 @@ class Permis
     public function setPrefecture(string $prefecture): self
     {
         $this->prefecture = $prefecture;
+
+        return $this;
+    }
+
+    public function getHabitant(): ?Habitant
+    {
+        return $this->habitant;
+    }
+
+    public function setHabitant(?Habitant $habitant): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($habitant === null && $this->habitant !== null) {
+            $this->habitant->setPermis(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($habitant !== null && $habitant->getPermis() !== $this) {
+            $habitant->setPermis($this);
+        }
+
+        $this->habitant = $habitant;
 
         return $this;
     }
