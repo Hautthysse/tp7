@@ -6,6 +6,7 @@ use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/produit', name: 'produit')]
@@ -82,9 +83,18 @@ class ProduitController extends AbstractController
         name: '_delete',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function deleteAction(int $id): Response
+    public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
-        $this->addFlash('info', 'échec suppression produit ' . $id);
+        $produitRepository = $em->getRepository(Produit::class);
+        $produit = $produitRepository->find($id);
+
+        if (is_null($produit))
+            throw new NotFoundHttpException('erreur suppression produit ' . $id);
+
+        $em->remove($produit);
+        $em->flush();
+        $this->addFlash('info', 'suppression produit ' . $id . ' réussie');
+
         return $this->redirectToRoute('produit_list');
     }
 
