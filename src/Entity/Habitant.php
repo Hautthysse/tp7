@@ -28,6 +28,17 @@ class Habitant
     )]
     private ?Permis $permis = null;
 
+    #[ORM\ManyToOne(
+        targetEntity: Ville::class,       // non nécessaire
+        inversedBy: 'habitants',
+    )]
+    #[ORM\JoinColumn(
+        name: 'id_ville',                 // nécessaire car Symfony choisirait 'ville_id'
+        referencedColumnName: 'id',       // non nécessaire
+        nullable: true,                   // non nécessaire
+    )]
+    private ?Ville $ville = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +64,18 @@ class Habitant
     public function setPermis(?Permis $permis): self
     {
         $this->permis = $permis;
+
+        return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
