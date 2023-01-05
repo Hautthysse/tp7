@@ -25,6 +25,10 @@ class Critique
     #[ORM\Column(type: Types::TEXT)]
     private ?string $avis = null;
 
+    #[ORM\ManyToOne(targetEntity: Film::class, inversedBy: 'critiques')]
+    #[ORM\JoinColumn(name: 'id_film', nullable: false)]
+    private ?Film $film = null;
+
 
     /**
      * Critique constructor
@@ -60,6 +64,18 @@ class Critique
     public function setAvis(string $avis): self
     {
         $this->avis = $avis;
+
+        return $this;
+    }
+
+    public function getFilm(): ?Film
+    {
+        return $this->film;
+    }
+
+    public function setFilm(?Film $film): self
+    {
+        $this->film = $film;
 
         return $this;
     }
