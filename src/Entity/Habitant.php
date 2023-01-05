@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HabitantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HabitantRepository::class)]
@@ -38,6 +40,17 @@ class Habitant
         nullable: true,                   // non nécessaire
     )]
     private ?Ville $ville = null;
+
+    #[ORM\ManyToMany(targetEntity: Nationalite::class, inversedBy: 'habitants')]
+    #[ORM\JoinTable(name: 'asso_habitants_nationalites')]
+    #[ORM\JoinColumn(name: 'id_habitant', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'id_nationalite', referencedColumnName: 'id')]
+    private Collection $nationalites;
+
+    public function __construct()
+    {
+        $this->nationalites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +89,30 @@ class Habitant
     public function setVille(?Ville $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Nationalite>
+     */
+    public function getNationalites(): Collection
+    {
+        return $this->nationalites;
+    }
+
+    public function addNationalite(Nationalite $nationalite): self
+    {
+        if (!$this->nationalites->contains($nationalite)) {
+            $this->nationalites->add($nationalite);
+        }
+
+        return $this;
+    }
+
+    public function removeNationalite(Nationalite $nationalite): self
+    {
+        $this->nationalites->removeElement($nationalite);
 
         return $this;
     }
