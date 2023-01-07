@@ -148,4 +148,27 @@ class DoctrineController extends AbstractController
         return $this->redirectToRoute('sandbox_doctrine_critique_view1', ['id' => $film->getId()]);
         //return $this->redirectToRoute('sandbox_doctrine_critique_view2', ['id' => $film->getId()]);
     }
+
+    #[Route(
+        '/critique/view1/{id}',
+        name: '_critique_view1',
+        requirements: ['id' => '[1-9]\d*'],
+    )]
+    public function critiqueView1Action(int $id, EntityManagerInterface $em): Response
+    {
+        $filmRepository = $em->getRepository(Film::class);
+        $critiqueRepository = $em->getRepository(Critique::class);
+
+        $film = $filmRepository->find($id);
+        if (is_null($film))
+            throw new NotFoundHttpException('Film ' . $id . ' inexistant');
+
+        $critiques = $critiqueRepository->findBy(['film' => $film]);
+
+        $args = array(
+            'film' => $film,
+            'critiques' => $critiques,
+        );
+        return $this->render('Sandbox/Doctrine/critiqueView1.html.twig', $args);
+    }
 }
