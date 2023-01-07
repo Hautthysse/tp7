@@ -30,6 +30,16 @@ class Produit
     #[ORM\Column(type: Types::TEXT)]
     private ?string $descriptif = null;
 
+    #[ORM\OneToOne(targetEntity: Manuel::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(
+        name: 'id_manuel',
+        referencedColumnName: 'id',    // inutile : valeur par défaut
+        nullable: true,                // inutile : valeur par défaut
+        unique: true,                  // inutile : valeur par défaut
+        options: ['default' => null],  // inutile : valeur par défaut
+    )]
+    private ?Manuel $manuel = null;
+
 
     /**
      * Produit constructor
@@ -37,6 +47,7 @@ class Produit
     public function __construct()
     {
         $this->actif = false;
+        $this->manuel = null;
     }
 
 
@@ -101,6 +112,18 @@ class Produit
     public function setDescriptif(string $descriptif): self
     {
         $this->descriptif = $descriptif;
+
+        return $this;
+    }
+
+    public function getManuel(): ?Manuel
+    {
+        return $this->manuel;
+    }
+
+    public function setManuel(?Manuel $manuel): self
+    {
+        $this->manuel = $manuel;
 
         return $this;
     }

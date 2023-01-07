@@ -17,7 +17,8 @@ class VenteFixtures extends Fixture
             ->setCode('7 11 654 876')
             ->setDateCreation(new \DateTime())
             ->setActif(true)
-            ->setDescriptif('descriptif 11111');
+            ->setDescriptif('descriptif 11111')
+            ->setManuel(null);      // inutile car valeur par défaut
         $em->persist($produit1);
 
 
@@ -33,8 +34,8 @@ class VenteFixtures extends Fixture
             ->setCode('5 21 749 559')
             ->setDateCreation(new \DateTime())
             ->setActif(true)
-            ->setDescriptif('descriptif 22222');
-            // il faudra ici associer le manuel2 au produit2
+            ->setDescriptif('descriptif 22222')
+            ->setManuel($manuel2);
         $em->persist($produit2);
 
 
@@ -44,7 +45,8 @@ class VenteFixtures extends Fixture
             ->setCode('2 45 814 445')
             ->setDateCreation(new \DateTime())
             ->setActif(false)
-            ->setDescriptif('descriptif 33333');
+            ->setDescriptif('descriptif 33333')
+            ->setManuel(null);      // inutile car valeur par défaut
         $em->persist($produit3);
 
 
@@ -60,8 +62,8 @@ class VenteFixtures extends Fixture
             ->setCode('8 44 783 712')
             ->setDateCreation(new \DateTime())
             ->setActif(true)
-            ->setDescriptif('descriptif 44444');
-            // il faudra ici associer le manuel4 au produit4
+            ->setDescriptif('descriptif 44444')
+            ->setManuel($manuel4);
         $em->persist($produit4);
 
 
