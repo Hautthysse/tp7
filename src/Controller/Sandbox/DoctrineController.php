@@ -171,4 +171,23 @@ class DoctrineController extends AbstractController
         );
         return $this->render('Sandbox/Doctrine/critiqueView1.html.twig', $args);
     }
+
+    #[Route(
+        '/critique/view2/{id}',
+        name: '_critique_view2',
+        requirements: ['id' => '[1-9]\d*'],
+    )]
+    public function critiqueView2Action(int $id, EntityManagerInterface $em): Response
+    {
+        $filmRepository = $em->getRepository(Film::class);
+
+        $film = $filmRepository->find($id);
+        if (is_null($film))
+            throw new NotFoundHttpException('Film ' . $id . ' inexistant');
+
+        $args = array(
+            'film' => $film,
+        );
+        return $this->render('Sandbox/Doctrine/critiqueView2.html.twig', $args);
+    }
 }
