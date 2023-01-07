@@ -5,6 +5,14 @@
 {% block titre_principal %}{{ parent() }} : détail du produit {{ produit.id }}{% endblock %}
 
 {% block vue %}
+    {# normalement devrait être dans un fichier css #}
+    <style>
+        caption { border: red solid 1px; }
+        table { border: black solid 1px; }
+        th, td { border: black solid 1px; padding: 2px 10px 2px 10px;}
+        th { text-align: left; }
+    </style>
+
     <p><a href="{{ path('produit_list') }}">vers la liste des produits</a></p>
 
     <h2>Détail du produit</h2>
@@ -26,6 +34,27 @@
             <li>web : <a href="{{ produit.manuel.url }}">vers le site</a> </li>
             <li>sommaire : {{ produit.manuel.sommaire is null ? 'pas de sommaire' : produit.manuel.sommaire }}</li>
         </ul>
+    {% endif %}
+
+    <h2>Images</h2>
+    {% if produit.images|length == 0 %}
+        <p>aucune image.</p>
+    {% else %}
+        <table>
+            <tr><th>id</th><th>url</th><th>url_mini</th><th>alt</th></tr>
+            {% for image in produit.images %}
+                <tr>
+                    <td>{{ image.id }}</td>
+                    <td>{{ image.url }} : <img src="{{ image.url }}" alt="{{ image.alt }}" /></td>
+                    {% if image.urlMini is not null %}
+                        <td>{{ image.urlMini }} : <img src="{{ image.urlMini }}" alt="{{ image.alt }}" /></td>
+                    {% else %}
+                        <td>pas de miniature</td>
+                    {% endif %}
+                    <td>{{ image.alt }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     {% endif %}
 
     {{ dump(produit) }}
