@@ -2,6 +2,7 @@
 
 namespace App\Controller\Sandbox;
 
+use App\Entity\Sandbox\Critique;
 use App\Entity\Sandbox\Film;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -112,5 +113,39 @@ class DoctrineController extends AbstractController
         $em->flush();            // ne pas oublier sinon rien ne se passe
 
         return $this->redirectToRoute('sandbox_doctrine_list');
+    }
+
+    #[Route('/critique/ajouterendur', name: '_critique_ajouterendur')]
+    public function critiqueAjouterendurAction(EntityManagerInterface $em): Response
+    {
+        $film = new Film();
+        $film
+            ->setTitre('Le grand bleu')
+            ->setAnnee(1988)
+            ->setEnstock(true)        // inutile : valeur par défaut
+            ->setPrix(9.99)
+            ->setQuantite(95);
+        $em->persist($film);
+
+        $critique1 = new Critique();
+        $critique1
+            ->setNote(5)
+            ->setAvis("sa a changer tout ma vi")
+            ->setFilm($film);
+        $em->persist($critique1);
+
+        $critique2 = new Critique();
+        $critique2
+            ->setNote(0)
+            ->setAvis("Le grand vide plutôt !")
+            ->setFilm($film);
+        $em->persist($critique2);
+
+        $em->flush();
+
+        dump($film);
+
+        return $this->redirectToRoute('sandbox_doctrine_critique_view1', ['id' => $film->getId()]);
+        //return $this->redirectToRoute('sandbox_doctrine_critique_view2', ['id' => $film->getId()]);
     }
 }
