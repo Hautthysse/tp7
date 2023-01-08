@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Image;
 use App\Entity\Manuel;
+use App\Entity\Pays;
 use App\Entity\Produit;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -12,6 +13,28 @@ class VenteFixtures extends Fixture
 {
     public function load(ObjectManager $em): void
     {
+        /* ===========================================================
+         * = pays
+         * ===========================================================*/
+        $pays1 = new Pays();
+        $pays1
+            ->setNom('France')
+            ->setCode('FR');
+        $em->persist($pays1);
+
+        $pays2 = new Pays();
+        $pays2
+            ->setNom('Allemagne');
+            // code mis à null par défaut
+        $em->persist($pays2);
+
+        $pays3 = new Pays();
+        $pays3
+            ->setNom('Liban')
+            ->setCode('LB');
+        $em->persist($pays3);
+
+
         /* ===========================================================
          * = produit 1
          * ===========================================================*/
@@ -25,7 +48,11 @@ class VenteFixtures extends Fixture
             ->setActif(true)
             ->setDescriptif('descriptif 11111')
             ->setManuel(null);      // inutile car valeur par défaut
+            //->addPays($pays1);           // incomplet : le pays ne contient pas le produit
         $em->persist($produit1);
+
+        $pays1->addProduit($produit1);     // complet : les deux entités se connaissent
+        $pays3->addProduit($produit1);
 
         $image1_1 = new Image();
         $image1_1
@@ -62,6 +89,8 @@ class VenteFixtures extends Fixture
             ->setDescriptif('descriptif 22222')
             ->setManuel($manuel2);
         $em->persist($produit2);
+
+        $pays1->addProduit($produit2);
 
         $image2_1 = new Image();
         $image2_1
@@ -103,6 +132,8 @@ class VenteFixtures extends Fixture
             ->setManuel(null);      // inutile car valeur par défaut
         $em->persist($produit3);
 
+        // pas de pays
+
         // pas d'image
 
 
@@ -124,6 +155,8 @@ class VenteFixtures extends Fixture
             ->setDescriptif('descriptif 44444')
             ->setManuel($manuel4);
         $em->persist($produit4);
+
+        $pays3->addProduit($produit4);
 
         // pas d'image
 

@@ -36,14 +36,20 @@ class Produit
     #[ORM\JoinColumn(
         name: 'id_manuel',
         referencedColumnName: 'id',    // inutile : valeur par défaut
-        nullable: true,                // inutile : valeur par défaut
         unique: true,                  // inutile : valeur par défaut
+        nullable: true,                // inutile : valeur par défaut
         options: ['default' => null],  // inutile : valeur par défaut
     )]
     private ?Manuel $manuel = null;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Image::class)]
     private Collection $images;
+
+    #[ORM\ManyToMany(targetEntity: Pays::class, inversedBy: 'produits')]
+    #[ORM\JoinTable(name: 'ts_produits_pays')]
+    #[ORM\JoinColumn(name: 'id_produit', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'id_pays', referencedColumnName: 'id')]
+    private Collection $payss;         // double 's' pour visualiser le pluriel
 
 
     /**
@@ -54,6 +60,7 @@ class Produit
         $this->actif = false;
         $this->manuel = null;
         $this->images = new ArrayCollection();
+        $this->payss = new ArrayCollection();
     }
 
 
@@ -160,6 +167,32 @@ class Produit
                 $image->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pays>
+     */
+    public function getPayss(): Collection
+    {
+        return $this->payss;
+    }
+
+    public function addPays(Pays $pays): self
+    {
+        if (!$this->payss->contains($pays)) {
+            $this->payss->add($pays);
+            // ne faudrait-il pas appeler $pays->addProduit($this) ?
+        }
+
+        return $this;
+    }
+
+    public function removePays(Pays $pays): self
+    {
+        $this->payss->removeElement($pays);
+        // si l'appel ci-dessus ok, ne faudrait-il pas appeler $pays->removeProduit($this) ?
 
         return $this;
     }
