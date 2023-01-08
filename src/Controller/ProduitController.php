@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/produit', name: 'produit')]
@@ -21,15 +24,13 @@ class ProduitController extends AbstractController
         requirements: ['page' => '[1-9]\d*'],
         defaults: [ 'page' => 0],        // la valeur par défaut ne respecte pas les contraintes
     )]
-    public function listAction(int $page): Response
+    public function listAction(int $page, EntityManagerInterface $em): Response
     {
+        $produitRepository = $em->getRepository(Produit::class);
+        $produits = $produitRepository->findAll();
         $args = array(
             'page' => $page,
-            'produits' => array(
-                ['id' => 2, 'denomination' => 'RAM',     'code' => '97558143', "actif" => false],
-                ['id' => 5, 'denomination' => 'souris',  'code' => '35425785', "actif" => true],
-                ['id' => 6, 'denomination' => 'clavier', 'code' => '33278214', "actif" => true],
-            ),
+            'produits' => $produits,
         );
         return $this->render('Produit/list.html.twig', $args);
     }
@@ -39,11 +40,19 @@ class ProduitController extends AbstractController
         name: '_view',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function viewAction(int $id): Response
+    public function viewAction(int $id, EntityManagerInterface $em): Response
     {
-        // simule l'interrogation de la base avec $id qui aurait la valeur 5
+        $produitRepository = $em->getRepository(Produit::class);
+        $produit = $produitRepository->find($id);
+
+        if (is_null($produit))
+        {
+            $this->addFlash('info', 'view : produit ' . $id . ' inexistant');
+            return $this->redirectToRoute('produit_list');
+        }
+
         $args = array(
-            'produit' => ['id' => 5, 'denomination' => 'souris',  'code' => '35425785', "actif" => true],
+            'produit' => $produit,
         );
         return $this->render('Produit/view.html.twig', $args);
     }
@@ -74,9 +83,18 @@ class ProduitController extends AbstractController
         name: '_delete',
         requirements: ['id' => '[1-9]\d*'],
     )]
-    public function deleteAction(int $id): Response
+    public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
-        $this->addFlash('info', 'échec suppression produit ' . $id);
+        $produitRepository = $em->getRepository(Produit::class);
+        $produit = $produitRepository->find($id);
+
+        if (is_null($produit))
+            throw new NotFoundHttpException('erreur suppression produit ' . $id);
+
+        $em->remove($produit);
+        $em->flush();
+        $this->addFlash('info', 'suppression produit ' . $id . ' réussie');
+
         return $this->redirectToRoute('produit_list');
     }
 
@@ -98,5 +116,34 @@ class ProduitController extends AbstractController
     {
         $this->addFlash('info', 'échec ajout relation produit/magasin');
         return $this->redirectToRoute('produit_view', ['id' => 3]);
+    }
+
+    /**
+     * test de QueryBuilder
+     */
+    #[Route(
+        '/viewQB/{id}/{method}',
+        name: '_view_qb',
+        requirements: [
+            'id' => '[1-9]\d*',
+            'method' => 'avec|sans',
+        ],
+    )]
+    public function viewQB(int $id, string $method, EntityManagerInterface $em)
+    {
+        $produitRepository = $em->getRepository(Produit::class);
+
+        if ($method === 'avec')
+            $produit = $produitRepository->findWithMagasins($id);
+        else
+            $produit = $produitRepository->find($id);
+        if (is_null($produit))
+            throw new NotFoundHttpException('erreur viewQB produit ' . $id);
+
+        $args = array(
+            'method' => $method,
+            'produit' => $produit,
+        );
+        return $this->render('Produit/viewQB.html.twig', $args);
     }
 }
