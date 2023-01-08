@@ -117,4 +117,33 @@ class ProduitController extends AbstractController
         $this->addFlash('info', 'échec ajout relation produit/magasin');
         return $this->redirectToRoute('produit_view', ['id' => 3]);
     }
+
+    /**
+     * test de QueryBuilder
+     */
+    #[Route(
+        '/viewQB/{id}/{method}',
+        name: '_view_qb',
+        requirements: [
+            'id' => '[1-9]\d*',
+            'method' => 'avec|sans',
+        ],
+    )]
+    public function viewQB(int $id, string $method, EntityManagerInterface $em)
+    {
+        $produitRepository = $em->getRepository(Produit::class);
+
+        if ($method === 'avec')
+            $produit = $produitRepository->findWithMagasins($id);
+        else
+            $produit = $produitRepository->find($id);
+        if (is_null($produit))
+            throw new NotFoundHttpException('erreur viewQB produit ' . $id);
+
+        $args = array(
+            'method' => $method,
+            'produit' => $produit,
+        );
+        return $this->render('Produit/viewQB.html.twig', $args);
+    }
 }
