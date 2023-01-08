@@ -3,9 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\Image;
+use App\Entity\Magasin;
 use App\Entity\Manuel;
 use App\Entity\Pays;
 use App\Entity\Produit;
+use App\Entity\ProduitMagasin;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -36,6 +38,30 @@ class VenteFixtures extends Fixture
 
 
         /* ===========================================================
+         * = magasins
+         * ===========================================================*/
+        $magasin1 = new Magasin();
+        $magasin1
+            ->setNom('AAAAA');
+        $em->persist($magasin1);
+
+        $magasin2 = new Magasin();
+        $magasin2
+            ->setNom('BBBBB');
+        $em->persist($magasin2);
+
+        $magasin3 = new Magasin();
+        $magasin3
+            ->setNom('CCCCC');
+        $em->persist($magasin3);
+
+        $magasin4 = new Magasin();
+        $magasin4
+            ->setNom('DDDDD');
+        $em->persist($magasin4);
+
+
+        /* ===========================================================
          * = produit 1
          * ===========================================================*/
         // pas de manuel
@@ -53,6 +79,37 @@ class VenteFixtures extends Fixture
 
         $pays1->addProduit($produit1);     // complet : les deux entités se connaissent
         $pays3->addProduit($produit1);
+
+        $produit1Magasin1 = new ProduitMagasin();
+        $produit1Magasin1
+            ->setProduit($produit1)        // inutile vu l'appel ci-dessous à addProduitMagasin
+            ->setMagasin($magasin1)        // inutile vu l'appel ci-dessous à addProduitMagasin
+            ->setQuantite(113)
+            ->setPrixUnitaire(3.14);
+        $em->persist($produit1Magasin1);
+        // obligé d'appeler ces deux méthodes pour avoir une connaissance mutuelle (même si c'est inutile pour les fixtures)
+        $produit1->addProduitMagasin($produit1Magasin1);
+        $magasin1->addProduitMagasin($produit1Magasin1);
+
+        $produit1Magasin2 = new ProduitMagasin();
+        $produit1Magasin2
+            ->setProduit($produit1)
+            ->setMagasin($magasin2)
+            ->setQuantite(95)
+            ->setPrixUnitaire(3.37);
+        $em->persist($produit1Magasin2);
+        $produit1->addProduitMagasin($produit1Magasin2);
+        $magasin2->addProduitMagasin($produit1Magasin2);
+
+        $produit1Magasin4 = new ProduitMagasin();
+        $produit1Magasin4
+            ->setProduit($produit1)
+            ->setMagasin($magasin4)
+            ->setQuantite(29)
+            ->setPrixUnitaire(3.99);
+        $em->persist($produit1Magasin4);
+        $produit1->addProduitMagasin($produit1Magasin4);
+        $magasin4->addProduitMagasin($produit1Magasin4);
 
         $image1_1 = new Image();
         $image1_1
@@ -91,6 +148,26 @@ class VenteFixtures extends Fixture
         $em->persist($produit2);
 
         $pays1->addProduit($produit2);
+
+        $produit2Magasin1 = new ProduitMagasin();
+        $produit2Magasin1
+            ->setProduit($produit2)
+            ->setMagasin($magasin1)
+            ->setQuantite(33)
+            ->setPrixUnitaire(59.99);
+        $em->persist($produit2Magasin1);
+        $produit2->addProduitMagasin($produit2Magasin1);
+        $magasin1->addProduitMagasin($produit2Magasin1);
+
+        $produit2Magasin4 = new ProduitMagasin();
+        $produit2Magasin4
+            ->setProduit($produit2)
+            ->setMagasin($magasin4)
+            ->setQuantite(7)
+            ->setPrixUnitaire(65.99);
+        $em->persist($produit2Magasin4);
+        $produit2->addProduitMagasin($produit2Magasin4);
+        $magasin4->addProduitMagasin($produit2Magasin4);
 
         $image2_1 = new Image();
         $image2_1
@@ -134,6 +211,8 @@ class VenteFixtures extends Fixture
 
         // pas de pays
 
+        // pas de magasin
+
         // pas d'image
 
 
@@ -157,6 +236,26 @@ class VenteFixtures extends Fixture
         $em->persist($produit4);
 
         $pays3->addProduit($produit4);
+
+        $produit4Magasin2 = new ProduitMagasin();
+        $produit4Magasin2
+            ->setProduit($produit4)
+            ->setMagasin($magasin2)
+            ->setQuantite(5)
+            ->setPrixUnitaire(5000001.12);
+        $em->persist($produit4Magasin2);
+        $produit4->addProduitMagasin($produit4Magasin2);
+        $magasin2->addProduitMagasin($produit4Magasin2);
+
+        $produit4Magasin4 = new ProduitMagasin();
+        $produit4Magasin4
+            ->setProduit($produit4)
+            ->setMagasin($magasin4)
+            ->setQuantite(3)
+            ->setPrixUnitaire(5000000.10);
+        $em->persist($produit4Magasin4);
+        $produit4->addProduitMagasin($produit4Magasin4);
+        $magasin4->addProduitMagasin($produit4Magasin4);
 
         // pas d'image
 

@@ -73,6 +73,23 @@
         </table>
     {% endif %}
 
+    <h2>Magasins</h2>
+    {% if produit.produitMagasins|length == 0 %}
+        <p>aucun magasin.</p>
+    {% else %}
+        <table>
+            <tr><th>id</th><th>nom</th><th>quantité</th><th>prix unitaire</th></tr>
+            {% for produitMagasin in produit.produitMagasins %}
+                <tr>
+                    <td>{{ produitMagasin.magasin.id }}</td>         {# table magasins #}
+                    <td>{{ produitMagasin.magasin.nom }}</td>        {# table magasins #}
+                    <td>{{ produitMagasin.quantite }}</td>           {# table produits_magasins #}
+                    <td>{{ produitMagasin.prixUnitaire }}</td>       {# table produits_magasins #}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
     <h2>dump de vérification</h2>
     {{ dump(produit) }}
 {% endblock %}

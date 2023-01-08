@@ -51,6 +51,9 @@ class Produit
     #[ORM\InverseJoinColumn(name: 'id_pays', referencedColumnName: 'id')]
     private Collection $payss;         // double 's' pour visualiser le pluriel
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: ProduitMagasin::class)]
+    private Collection $produitMagasins;
+
 
     /**
      * Produit constructor
@@ -61,6 +64,7 @@ class Produit
         $this->manuel = null;
         $this->images = new ArrayCollection();
         $this->payss = new ArrayCollection();
+        $this->produitMagasins = new ArrayCollection();
     }
 
 
@@ -193,6 +197,36 @@ class Produit
     {
         $this->payss->removeElement($pays);
         // si l'appel ci-dessus ok, ne faudrait-il pas appeler $pays->removeProduit($this) ?
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProduitMagasin>
+     */
+    public function getProduitMagasins(): Collection
+    {
+        return $this->produitMagasins;
+    }
+
+    public function addProduitMagasin(ProduitMagasin $produitMagasin): self
+    {
+        if (!$this->produitMagasins->contains($produitMagasin)) {
+            $this->produitMagasins->add($produitMagasin);
+            $produitMagasin->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduitMagasin(ProduitMagasin $produitMagasin): self
+    {
+        if ($this->produitMagasins->removeElement($produitMagasin)) {
+            // set the owning side to null (unless already changed)
+            if ($produitMagasin->getProduit() === $this) {
+                $produitMagasin->setProduit(null);
+            }
+        }
 
         return $this;
     }
