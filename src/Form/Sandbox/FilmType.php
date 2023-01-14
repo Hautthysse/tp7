@@ -34,7 +34,10 @@ class FilmType extends AbstractType
                 ])
             ->add('prix',
                 NumberType::class,     // déduit automatiquement par Symfony
-                ['label' => 'prix d\'achat'])
+                [
+                    'label' => 'prix d\'achat',
+                    'invalid_message' => 'le prix n\'est pas un nombre',
+                ])
             ->add('quantite',
                 IntegerType::class,    // déduit automatiquement par Symfony
                 [
