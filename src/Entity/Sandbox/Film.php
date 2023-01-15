@@ -59,6 +59,7 @@ class Film
     private ?int $quantite = null;
 
     #[ORM\OneToMany(mappedBy: 'film', targetEntity: Critique::class)]
+    #[Assert\Valid]
     private Collection $critiques;
 
 
