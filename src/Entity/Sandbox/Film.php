@@ -6,6 +6,7 @@ use App\Repository\Sandbox\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'sb_films')]
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
@@ -17,19 +18,41 @@ class Film
     private ?int $id = null;
 
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 200,
+        maxMessage: 'La taille du titre est trop grande ; la limite est {{ limit }}',
+    )]
     private ?string $titre = null;
 
     #[ORM\Column(options: ['comment' => 'année de sortie'])]
     // le paramètre "name" n'est pas précisé, le nom du champ sera celui du membre : "annee"
     // le paramètre "type" n'est pas précisé, ce sera celui correspondant à 'int' : "integer"
+    #[Assert\Range(
+        minMessage: 'Avant {{ limit }} le cinéma n\'existait pas',
+        min: 1850,
+    )]
+    #[Assert\Range(
+        maxMessage: '{{ value }} est trop loin dans le futur, après {{ limit }} ...',
+        max: 2053,
+    )]
     private ?int $annee = null;
 
     #[ORM\Column(name: 'enstock', type: 'boolean', options: ['default' => true])]
     // paramètre "name" inutile ici car c'est déjà la valeur par défaut (c'est pour l'exemple)
     // idem pour le paramètre "type"
+    #[Assert\Type(
+        type: 'boolean',
+        message: '{{ value }} n\'est pas de type {{ type }}',
+    )]
     private ?bool $enstock = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        notInRangeMessage: 'le prix doit être compris entre {{ min }} et {{ max }}',
+        min: 1,
+        max: 9999.99,
+    )]
     private ?float $prix = null;
 
     #[ORM\Column(nullable: true)]
