@@ -86,4 +86,30 @@ class FormController extends AbstractController
         dump($validator->validate($film));
         return new Response('<body>cf. dump</body>');
     }
+
+    #[Route('/film/add', name: '_film_add')]
+    public function filmAddAction(EntityManagerInterface $em, Request $request): Response
+    {
+        $film = new Film();
+
+        $form = $this->createForm(FilmType::class, $film);
+        $form->add('send', SubmitType::class, ['label' => 'add film']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em->persist($film);
+            $em->flush();
+            $this->addFlash('info', 'ajout film réussi');
+            return $this->redirectToRoute('sandbox_doctrine_critique_view2', ['id' => $film->getId()]);
+        }
+
+        if ($form->isSubmitted())
+            $this->addFlash('info', 'formulaire ajout film incorrect');
+
+        $args = array(
+            'myform' => $form->createView(),
+        );
+        return $this->render('Sandbox/Form/film_add.html.twig', $args);
+    }
 }
