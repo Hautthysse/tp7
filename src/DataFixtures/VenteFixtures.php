@@ -8,11 +8,21 @@ use App\Entity\Manuel;
 use App\Entity\Pays;
 use App\Entity\Produit;
 use App\Entity\ProduitMagasin;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class VenteFixtures extends Fixture
 {
+
+    private ?UserPasswordHasherInterface $passwordHasher = null;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $em): void
     {
         /* ===========================================================
@@ -258,6 +268,55 @@ class VenteFixtures extends Fixture
         $magasin4->addProduitMagasin($produit4Magasin4);
 
         // pas d'image
+
+
+        /* ===========================================================
+         * = utilisateurs
+         * ===========================================================*/
+        $user = new User();
+        $user
+            ->setLogin('jarod')
+            ->setName('Le Caméléon')
+            ->setRoles(['ROLE_CLIENT']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, 'toto');
+        $user->setPassword($hashedPassword);
+        $em->persist($user);
+
+        $user = new User();
+        $user
+            ->setLogin('parker')
+            ->setName('Mlle Parker')
+            ->setRoles(['ROLE_SALARIE']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, 'azerty');
+        $user->setPassword($hashedPassword);
+        $em->persist($user);
+
+        $user = new User();
+        $user
+            ->setLogin('sidney')
+            ->setName('Sidney')
+            ->setRoles(['ROLE_SALARIE', 'ROLE_GESTION']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
+        $user->setPassword($hashedPassword);
+        $em->persist($user);
+
+        $user = new User();
+        $user
+            ->setLogin('raines')
+            ->setName('William Raines')
+            ->setRoles(['ROLE_DIRIGEANT']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, '123456');
+        $user->setPassword($hashedPassword);
+        $em->persist($user);
+
+        $user = new User();
+        $user
+            ->setLogin('angelo')
+            ->setName('Angelo')
+            ->setRoles(['ROLE_GESTION']);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, 'qwerty');
+        $user->setPassword($hashedPassword);
+        $em->persist($user);
 
 
         $em->flush();
