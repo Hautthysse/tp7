@@ -64,4 +64,10 @@ class SecurityTestController extends AbstractController
 
         return new Response('<body></body>');
     }
+
+    #[Route('/accessuser', name: '_accessuser')]
+    public function accessUserAction(): Response
+    {
+        return $this->render('Sandbox/SecurityTest/access_user.html.twig');
+    }
 }
