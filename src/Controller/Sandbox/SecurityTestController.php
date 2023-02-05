@@ -71,6 +71,7 @@ class SecurityTestController extends AbstractController
     {
         //dump($this->getUser());
         dump($security->getUser());
+        dump($security->getUser()->getRoles());
         return $this->render('Sandbox/SecurityTest/access_user.html.twig');
     }
 }
