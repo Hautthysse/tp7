@@ -5,6 +5,7 @@ namespace App\Controller\Sandbox;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,9 +67,10 @@ class SecurityTestController extends AbstractController
     }
 
     #[Route('/accessuser', name: '_accessuser')]
-    public function accessUserAction(): Response
+    public function accessUserAction(Security $security): Response
     {
-        dump($this->getUser());
+        //dump($this->getUser());
+        dump($security->getUser());
         return $this->render('Sandbox/SecurityTest/access_user.html.twig');
     }
 }
