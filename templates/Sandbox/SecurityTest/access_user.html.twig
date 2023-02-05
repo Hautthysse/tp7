@@ -5,4 +5,6 @@
 {% block titre_principal %}Sécurité : accès aux données de connexion{% endblock %}
 
 {% block vue %}
+    {{ dump(app.user) }}
+    {{ dump(app.user.roles) }}
 {% endblock %}
