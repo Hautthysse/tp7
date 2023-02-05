@@ -4,11 +4,13 @@ namespace App\Controller\Sandbox;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+#use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/sandbox/securitytest', name: 'sandbox_securitytest')]
 class SecurityTestController extends AbstractController
@@ -73,5 +75,12 @@ class SecurityTestController extends AbstractController
         dump($security->getUser());
         dump($security->getUser()->getRoles());
         return $this->render('Sandbox/SecurityTest/access_user.html.twig');
+    }
+
+    #[Route('/role1', name: '_role1')]
+    #[IsGranted('ROLE_SALARIE')]
+    public function role1Action(): Response
+    {
+        return new Response('<body>IsGranted(\'ROLE_SALARIE\')</body>');
     }
 }
