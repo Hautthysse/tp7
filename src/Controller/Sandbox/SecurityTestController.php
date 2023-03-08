@@ -10,6 +10,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/sandbox/securitytest', name: 'sandbox_securitytest')]
@@ -99,5 +100,18 @@ class SecurityTestController extends AbstractController
     public function role3Action(): Response
     {
         return new Response('<body>IsGranted(\'ROLE_SALARIE\') or IsGranted(\'ROLE_GESTION\')</body>');
+    }
+
+    #[Route('/role4', name: '_role4')]
+    // pas d'annotation : mais le fichier security.yaml indique qu'on doit être authentifié
+    public function role4Action(Security $security): Response
+    {
+        //if (! $this->isGranted('ROLE_SALARIE'))
+        if (! $security->isGranted('ROLE_SALARIE'))
+            throw new AccessDeniedException('Vous n\'êtes pas salarié');
+
+        $this->denyAccessUnlessGranted('ROLE_GESTION', null, 'Vous n\'êtes pas gestionnaire');
+
+        return new Response('<body>IsGranted dans l\'action</body>');
     }
 }
