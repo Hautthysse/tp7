@@ -91,4 +91,13 @@ class SecurityTestController extends AbstractController
     {
         return new Response('<body>IsGranted(\'ROLE_SALARIE\') et IsGranted(\'ROLE_GESTION\')</body>');
     }
+
+    #[Route('/role3', name: '_role3')]
+    #[\Sensio\Bundle\FrameworkExtraBundle\Configuration\Security(
+        "is_granted('ROLE_SALARIE') or is_granted('ROLE_GESTION')"
+    )]
+    public function role3Action(): Response
+    {
+        return new Response('<body>IsGranted(\'ROLE_SALARIE\') or IsGranted(\'ROLE_GESTION\')</body>');
+    }
 }
