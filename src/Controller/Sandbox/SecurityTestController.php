@@ -83,4 +83,12 @@ class SecurityTestController extends AbstractController
     {
         return new Response('<body>IsGranted(\'ROLE_SALARIE\')</body>');
     }
+
+    #[Route('/role2', name: '_role2')]
+    #[IsGranted('ROLE_SALARIE', statusCode: 404, message: 'No access! Get out!')]
+    #[IsGranted('ROLE_GESTION')]
+    public function role2Action(): Response
+    {
+        return new Response('<body>IsGranted(\'ROLE_SALARIE\') et IsGranted(\'ROLE_GESTION\')</body>');
+    }
 }
