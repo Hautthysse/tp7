@@ -114,4 +114,13 @@ class SecurityTestController extends AbstractController
 
         return new Response('<body>IsGranted dans l\'action</body>');
     }
+
+    #[Route('/role5', name: '_role5')]
+    #[IsGranted('ROLE_SALARIE')]
+    public function role5Action(): Response
+    {
+        if ($this->getUser()->getUserIdentifier() === 'sidney')
+            throw new AccessDeniedException('Vous n\'avez pas l\'accréditation nécessaire');
+        return new Response('<body>Tests dans les annotations et le code</body>');
+    }
 }
