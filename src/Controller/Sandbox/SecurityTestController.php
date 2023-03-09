@@ -123,4 +123,14 @@ class SecurityTestController extends AbstractController
             throw new AccessDeniedException('Vous n\'avez pas l\'accréditation nécessaire');
         return new Response('<body>Tests dans les annotations et le code</body>');
     }
+
+    #[Route('/role6', name: '_role6')]
+    #[IsGranted('ROLE_SALARIE')]
+    public function role6Action(): Response
+    {
+        $msg = 'ok pour lister les films';
+        if ($this->isGranted('ROLE_DIRIGEANT'))
+            $msg .= ' (avec droit de suppression)';
+        return new Response('<body>' . $msg . '</body>');
+    }
 }
