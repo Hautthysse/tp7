@@ -133,4 +133,11 @@ class SecurityTestController extends AbstractController
             $msg .= ' (avec droit de suppression)';
         return new Response('<body>' . $msg . '</body>');
     }
+
+    #[Route('/role7', name: '_role7')]
+    #[IsGranted('ROLE_SALARIE')]
+    public function role7Action(): Response
+    {
+        return $this->render('Sandbox/SecurityTest/role7.html.twig');
+    }
 }
